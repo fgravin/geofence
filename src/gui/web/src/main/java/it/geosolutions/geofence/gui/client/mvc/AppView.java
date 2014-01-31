@@ -134,6 +134,7 @@ public class AppView extends View
         this.viewport = new Viewport();
         this.viewport.setLayout(new BorderLayout());
 
+
         createNorth();
         // createEast();
         createCenter();
@@ -167,7 +168,7 @@ public class AppView extends View
 
         BorderLayoutData data = new BorderLayoutData(LayoutRegion.NORTH,
                 Constants.NORTH_PANEL_DIMENSION);
-        data.setMargins(new Margins(0, 5, 0, 5));
+        data.setMargins(new Margins(90, 5, 0, 5));
         data.setSplit(true);
 
         viewport.add(north, data);

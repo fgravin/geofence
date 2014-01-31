@@ -1455,7 +1455,7 @@ public class RuleGridWidget extends GeofenceGridWidget<Rule> {
 
 		};
 
-		filter.setWidth(130);
+		filter.setWidth(500);
 		filter.setIcon(Resources.ICONS.search());
 
 		// Bind the filter field to your grid store (grid.getStore())

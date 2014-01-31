@@ -31,6 +31,9 @@
 		<property name="attributesMapper" ref="geofenceLdapUserAttributesMapper" />
 		<property name="groupsAttributesMapper" ref="geofenceLdapUserGroupAttributesMapper" />
 		<property name="dao" ref="baseUserDAO" />
+        <property name="searchBase" value="ou=users" />
+        <property name="userDn" value="uid=%s,ou=users" />
+
 	</bean>
 	
 	<bean id="userGroupDAO" class="it.geosolutions.geofence.ldap.dao.impl.UserGroupDAOLdapImpl">
@@ -50,7 +53,7 @@
 	<bean id="geofenceLdapUserAttributesMapper" class="it.geosolutions.geofence.ldap.dao.impl.GSUserAttributesMapper">
 	<property name="ldapAttributeMappings">
 		<map>
-			<entry key="id" value="uidNumber"/>
+			<entry key="id" value="employeeNumber"/>
 			<entry key="username" value="uid"/>
 			<entry key="email" value="mail"/>
 			<entry key="name" value="cn"/>

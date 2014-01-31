@@ -77,6 +77,8 @@ import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.store.Store;
+import com.extjs.gxt.ui.client.store.StoreSorter;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.MessageBox;
@@ -317,15 +319,6 @@ public class EditRuleWidget extends GeofenceFormWidget
         rulePriorityColumn.setMenuDisabled(false);
         rulePriorityColumn.setSortable(true);
         configs.add(rulePriorityColumn);
-
-        ColumnConfig ruleUserColumn = new ColumnConfig();
-        ruleUserColumn.setId(BeanKeyValue.USER.getValue());
-        ruleUserColumn.setHeader("User");
-        ruleUserColumn.setWidth(COLUMN_USER_WIDTH);
-        ruleUserColumn.setRenderer(this.createUsersComboBox());
-        ruleUserColumn.setMenuDisabled(true);
-        ruleUserColumn.setSortable(false);
-        configs.add(ruleUserColumn);
 
         ColumnConfig ruleProfileColumn = new ColumnConfig();
         ruleProfileColumn.setId(BeanKeyValue.PROFILE.getValue());
@@ -784,7 +777,7 @@ public class EditRuleWidget extends GeofenceFormWidget
                     profilesComboBox.setTypeAhead(true);
                     profilesComboBox.setTriggerAction(TriggerAction.ALL);
                     profilesComboBox.setWidth(100);
-                    profilesComboBox.setMinListWidth(350);
+                    profilesComboBox.setMinListWidth(500);
 
                     if (model.getProfile() != null)
                     {
@@ -827,9 +820,34 @@ public class EditRuleWidget extends GeofenceFormWidget
                     BasePagingLoader<PagingLoadResult<ModelData>> profilesLoader =
                         new BasePagingLoader<PagingLoadResult<ModelData>>(
                             profileProxy);
+                    
                     profilesLoader.setRemoteSort(false);
-                    availableProfiles = new ListStore<UserGroup>(profilesLoader);
+                    	
+                    availableProfiles = new ListStore<UserGroup>(profilesLoader) {
+                    	  protected void onLoad(LoadEvent le) {
+                    		  super.onLoad(le);
+                    		  this.sort(BeanKeyValue.NAME.getValue(),SortDir.ASC);
+                    		  
+                    		  ListStore<UserGroup> tmpStore = new ListStore<UserGroup>();
+                    		  for(int i=0;i<this.getCount();++i) {
+                    			  boolean present = false;
+                    			  for(int j=0;j<tmpStore.getCount();++j) {
+	                    			  if(tmpStore.getAt(j).getName().equals(this.getAt(i).getName())) {
+	                    				  present = true;
+	                    				  break;
+	                    			  }
+                    			  }
+                    			  if(!present) {
+                    				  tmpStore.add(this.getAt(i));
+                    			  }
+                    		  }
+                    		  this.removeAll();
+                    		  for(int i=0;i<tmpStore.getCount();++i) {
+                    			this.add(tmpStore.getAt(i));
+                    		  }
 
+                    	  }
+                    };
                     return availableProfiles;
                 }
             };

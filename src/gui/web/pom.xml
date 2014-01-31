@@ -349,7 +349,7 @@
 				<configuration>
 					<inplace>true</inplace>
 					<module>it.geosolutions.geofence.gui.Application</module>
-					<runTarget>Application.html</runTarget>
+					<runTarget>index.jsp</runTarget>
 					<warSourceDirectory>war</warSourceDirectory>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
